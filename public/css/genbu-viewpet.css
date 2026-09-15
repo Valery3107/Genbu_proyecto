@@ -1,0 +1,383 @@
+/* Vista perfil mascota — mockup GENBU (estampado, rejilla equidistante, bordes negros) */
+
+:root {
+  --pet-bg-pagina: #ecefec;
+  --pet-titulo: #1e4d2b;
+  --pet-panel-verde: #76a589;
+  --pet-etiqueta-fondo: #c5e0e3;
+  --pet-input-fondo: #d1d1d1;
+  --pet-boton-claro-fondo: #c5e0e3;
+  --pet-boton-claro-hover: #b3d2d6;
+  --pet-boton-pie-fondo: #2c3e50;
+  --pet-boton-pie-hover: #243342;
+  --pet-boton-pie-danger-hover: #5c3d42;
+  --pet-borde: #000000;
+  --pet-borde-suave: rgba(0, 0, 0, 0.88);
+  --pet-sombra-panel: rgba(0, 0, 0, 0.12);
+  --pet-sombra-btn: rgba(0, 0, 0, 0.14);
+  --pet-gap-bloque: 28px;
+  --pet-gap-filas: 18px;
+  --pet-gap-columnas: 18px;
+  /* Zoom sobre la foto para recortar márgenes claros del PNG y llenar el círculo */
+  --pet-photo-zoom: 1.28;
+}
+
+/* Fondo claro + estampado explícito (legible como en el resto del proyecto) */
+body.page-viewpet {
+  background: var(--pet-bg-pagina);
+}
+
+body.page-viewpet .bg-pattern {
+  background-image: url("../images/estampado.png");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.26;
+}
+
+.page--pet {
+  gap: var(--pet-gap-bloque);
+  max-width: 1000px;
+  padding-top: 28px;
+  padding-bottom: 36px;
+}
+
+.page--pet .header {
+  padding-bottom: 20px;
+  margin-bottom: 4px;
+  gap: var(--pet-gap-columnas);
+}
+
+.page--pet .headline h1 {
+  font-size: clamp(26px, 3.5vw, 38px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pet-titulo);
+}
+
+/* Dos columnas: formulario flexible + sidebar ancho fijo equilibrado */
+.pet-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 252px;
+  column-gap: var(--pet-gap-bloque);
+  row-gap: var(--pet-gap-bloque);
+  align-items: start;
+}
+
+/* Panel datos — mismo verde y borde negro fino */
+.pet-form-panel {
+  background: var(--pet-panel-verde);
+  border: 1px solid var(--pet-borde);
+  border-radius: 20px;
+  padding: 26px 22px 28px;
+  box-shadow: 0 10px 24px var(--pet-sombra-panel);
+}
+
+.pet-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pet-gap-filas);
+}
+
+/* Etiqueta | campo alineados y separación uniforme entre columnas */
+.pet-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 34%) minmax(0, 1fr);
+  align-items: stretch;
+  column-gap: var(--pet-gap-columnas);
+}
+
+.pet-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 11px 14px;
+  min-height: 50px;
+  background: var(--pet-etiqueta-fondo);
+  border: 1px solid var(--pet-borde);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+  color: var(--texto-oscuro);
+  cursor: default;
+}
+
+.pet-label-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (min-width: 600px) {
+  .pet-label span.pet-label-text {
+    text-transform: uppercase;
+  }
+}
+
+.pet-input-wrap {
+  border-radius: 16px;
+  background: var(--pet-input-fondo);
+  border: 1px solid var(--pet-borde);
+  min-height: 50px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: box-shadow 0.15s ease;
+}
+
+.pet-input-wrap:focus-within {
+  border-color: var(--pet-borde);
+  box-shadow:
+    0 0 0 3px var(--focus-anillo),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.pet-input-wrap input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--texto-oscuro);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pet-input-wrap input::placeholder {
+  color: #5c6562;
+  font-weight: 600;
+}
+
+/* Columna foto + CTA — espaciado uniforme */
+.pet-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--pet-gap-bloque);
+}
+
+.pet-photo-stack {
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  margin-inline: auto;
+}
+
+.pet-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--pet-borde);
+  box-shadow: 0 12px 28px var(--pet-sombra-panel);
+  /* Si el PNG trae bandas blancas, el fondo no se nota al hacer zoom */
+  background: #0f1412;
+}
+
+/* Cubre todo el círculo interior al borde negro; el zoom compensa márgenes internos del PNG */
+.pet-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+  transform: scale(var(--pet-photo-zoom));
+  transform-origin: center center;
+}
+
+.pet-photo-bone {
+  position: absolute;
+  top: 6px;
+  right: 2px;
+  width: clamp(88px, 26vw, 104px);
+  height: auto;
+  transform: rotate(26deg);
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pet-quick-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pet-gap-filas);
+}
+
+.pet-btn-quick {
+  width: 100%;
+  min-height: 52px;
+  padding: 11px 15px;
+  border-radius: 16px;
+  border: 1px solid var(--pet-borde);
+  background: var(--pet-boton-claro-fondo);
+  color: var(--texto-oscuro);
+  font-family: "Nunito", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 14px var(--pet-sombra-btn);
+  transition: background 0.2s ease, transform 0.12s ease;
+}
+
+.pet-btn-quick svg {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  opacity: 0.88;
+}
+
+.pet-btn-quick:hover {
+  background: var(--pet-boton-claro-hover);
+  transform: translateY(-1px);
+}
+
+.pet-btn-quick:focus-visible {
+  outline: 2px solid var(--verde-azulado);
+  outline-offset: 3px;
+}
+
+/* Pie — rejilla 2×2 equidistante */
+.pet-footer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "edit save"
+    "add del";
+  gap: var(--pet-gap-filas) var(--pet-gap-columnas);
+  max-width: 720px;
+  margin-top: 12px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+.pet-footer-actions .pet-btn-footer:nth-child(1) {
+  grid-area: edit;
+}
+
+.pet-footer-actions .pet-btn-footer:nth-child(2) {
+  grid-area: save;
+}
+
+.pet-footer-actions .pet-btn-footer:nth-child(3) {
+  grid-area: add;
+}
+
+.pet-footer-actions .pet-btn-footer:nth-child(4) {
+  grid-area: del;
+}
+
+.pet-btn-footer {
+  min-height: 50px;
+  padding: 11px 16px;
+  border: 1px solid var(--pet-borde);
+  border-radius: 16px;
+  background: var(--pet-boton-pie-fondo);
+  color: #ffffff;
+  font-family: "Nunito", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--pet-sombra-btn);
+  transition: background 0.2s ease, transform 0.12s ease;
+}
+
+.pet-btn-footer:hover {
+  background: var(--pet-boton-pie-hover);
+  transform: translateY(-1px);
+}
+
+.pet-btn-footer:focus-visible {
+  outline: 2px solid var(--verde-azulado);
+  outline-offset: 2px;
+}
+
+.pet-btn-footer--danger:hover {
+  background: var(--pet-boton-pie-danger-hover);
+}
+
+a.logo-circle {
+  text-decoration: none;
+  color: inherit;
+  border-color: var(--pet-borde);
+}
+
+a.logo-circle:focus-visible {
+  outline: 2px solid var(--verde-azulado);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .pet-layout {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .pet-sidebar {
+    max-width: 400px;
+    margin-inline: auto;
+  }
+
+  .pet-photo-stack {
+    max-width: 200px;
+  }
+
+  .pet-photo-bone {
+    width: clamp(80px, 22vw, 96px);
+    top: 4px;
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .page--pet .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .pet-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .pet-label {
+    border-radius: 14px;
+    min-height: 48px;
+  }
+
+  .pet-footer-actions {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "edit"
+      "save"
+      "add"
+      "del";
+  }
+}

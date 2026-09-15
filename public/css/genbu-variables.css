@@ -1,0 +1,20 @@
+/* Tokens de color y tema GENBU — reutilizable en otras páginas (login, recuperar, etc.) */
+:root {
+  --verde-fondo: #a8c8c0;
+  --verde-boton: #4a8a7a;
+  --verde-boton-hover: #3a7060;
+  --verde-card: #e8ede8;
+  --verde-input: #d4ddd8;
+  --texto-oscuro: #2d4a42;
+  --texto-link: #4a8a7a;
+  /* Verde azulado — etiquetas de fila, acentos y bordes suaves */
+  --verde-azulado: #4a9490;
+  --verde-azulado-oscuro: #3d7f7b;
+  --etiqueta-fila-fondo: rgba(74, 148, 144, 0.32);
+  --etiqueta-fila-borde: rgba(61, 127, 123, 0.48);
+  --icono-fila-fondo: rgba(74, 148, 144, 0.22);
+  --icono-fila-borde: rgba(61, 127, 123, 0.4);
+  --acento-suave-fondo: rgba(74, 148, 144, 0.12);
+  --acento-suave-borde: rgba(61, 127, 123, 0.35);
+  --focus-anillo: rgba(74, 148, 144, 0.22);
+}

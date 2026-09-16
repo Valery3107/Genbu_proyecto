@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamp('token_expiracion')->nullable();
             $table->timestamp('fecha_registro')->useCurrent();
     /**
-     * ejemplo uso de versiones 
+     * ejemplo uso de versiones  con git
      */
 });
     }

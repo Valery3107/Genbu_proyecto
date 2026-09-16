@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('token_recuperacion')->nullable();
             $table->timestamp('token_expiracion')->nullable();
             $table->timestamp('fecha_registro')->useCurrent();
+    /**
+     * ejemplo uso de versiones  con git
+     */
 });
     }
 

@@ -53,3 +53,15 @@ Route::get('/reset-password/{token}', function ($token) {
 Route::post('/reset-password', function () { 
     return 'Contraseña actualizada (falta implementar el guardado real)'; 
 })->name('password.actualizar');
+
+ Route::get('/dashboard/veterinario', function () { 
+    return view('dashboard.dashboard-veterinario'); 
+})->name('dashboard.veterinario');
+
+Route::get('/dashboard/secretaria', function () {
+    return view('dashboard.dashboard-secretaria');
+})->name('dashboard.secretaria');
+
+Route::get('/dashboard/administrador', function () {
+    return view('dashboard.dashboard-administrador');
+})->name('dashboard.administrador');

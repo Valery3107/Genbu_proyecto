@@ -264,7 +264,7 @@
           <input type="password" placeholder="CONTRASEÑA">
         </div>
         <button type="button" class="btn-primary-genbu" id="btn-login-genbu">INICIAR SESIÓN</button>
-        <a href="#" class="link-text">¿Olvidaste tu contraseña?</a>
+        <a href="{{ route('password.solicitar') }}" class="link-text">¿Olvidaste tu contraseña?</a>
         <a href="{{ route('signup') }}" class="link-text">Crear una cuenta nueva</a>
       </div>
     </div>

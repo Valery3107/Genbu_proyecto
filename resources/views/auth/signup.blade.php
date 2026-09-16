@@ -18,7 +18,7 @@
         <img src="{{ asset('images/logo.png') }}" alt="Logo GENBU">
       </div>
       <div class="headline">
-        <h1>PARA CREAR UNA NUEVA CUENTA, VERIFICA QUE ERES EL PROPIETARIO</h1>
+        <h1>PARA CREAR UNA NUEVA CUENTA, VERIFICA QUE ERES PERSONAL AUTORIZADO DE LA CLÍNICA</h1>
         <p>Ingresa tu codigo unico de acceso para continuar con el registro.</p>
       </div>
     </header>
@@ -40,8 +40,8 @@
       </div>
 
       <div class="actions actions--signup">
-        <a class="btn--signup btn-primary" href="perfil-persona.html">CONTINUAR CREACIÓN DE CUENTA</a>
-        <a class="btn--signup btn-secondary" href="pgc.html">VOLVER A INICIO DE SESIÓN</a>
+        <a class="btn--signup btn-primary" href="{{ route('perfil.crear') }}">CONTINUAR CREACIÓN DE CUENTA</a>
+        <a class="btn--signup btn-secondary" href="{{ route('login') }}">VOLVER A INICIO DE SESIÓN</a>
       </div>
     </section>
   </main>

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GENBU - Perfil de la persona</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/genbu-variables.css">
-  <link rel="stylesheet" href="css/genbu-common.css">
-  <link rel="stylesheet" href="css/genbu-perfil.css">
+  <link rel="stylesheet" href="{{ asset('css/genbu-variables.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/genbu-common.css') }}"> 
+  <link rel="stylesheet" href="{{ asset('css/genbu-perfil.css') }}">
 </head>
 <body>
   <div class="bg-pattern"></div>
@@ -15,7 +15,7 @@
   <main class="page page--perfil">
     <header class="header">
       <div class="logo-circle">
-        <img src="images/logo.png" alt="Logo GENBU">
+         <img src="{{ asset('images/logo.png') }}" alt="Logo GENBU">
       </div>
       <div class="headline">
         <h1>Perfil de la persona</h1>
@@ -25,7 +25,8 @@
     <section class="card card--perfil" aria-label="Datos del perfil">
       <span class="step-tag">Paso 2 de 2 — Datos personales</span>
 
-      <form class="form-grid" action="#" method="post">
+      <form class="form-grid" action="{{ route('perfil.guardar') }}" method="post">
+      @csrf 
         <div class="form-row">
           <label class="row-label" for="nombreCompleto">Nombre completo</label>
           <div class="row-input-wrap">
@@ -88,12 +89,11 @@
 
         <div class="actions actions--perfil">
           <button type="submit" class="btn--perfil btn-primary">Crear cuenta</button>
-          <a class="btn--perfil btn-secondary" href="viewVeterinary.html">Continuar para veterinario</a>
-          <a class="btn--perfil btn-secondary" href="viewPet.html">Ir al perfil de la mascota</a>
+          <a class="btn--perfil btn-secondary" href="{{ route('veterinario.form') }}">Continuar para veterinario</a>
         </div>
       </form>
 
-      <a class="back-link" href="SignUp.html">Volver al paso anterior</a>
+      <a class="back-link" href="{{ route('signup') }}">Volver al paso anterior</a>
     </section>
   </main>
 </body>

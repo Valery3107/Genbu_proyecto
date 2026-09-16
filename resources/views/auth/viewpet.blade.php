@@ -39,12 +39,12 @@
           </div>
 
           <div class="pet-row">
-            <label class="pet-label" for="edadMascota">
+            <label class="pet-label" for="fechaNacimientoMascota">
               <img class="pet-label-icon" src="{{ asset('images/time.png') }}" width="26" height="26" alt="" aria-hidden="true">
-              <span class="pet-label-text">Edad</span>
+              <span class="pet-label-text">Fecha de nacimiento</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="edadMascota" name="edadMascota" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej. 3 años">
+              <input id="fechaNacimientoMascota" name="fechaNacimientoMascota" type="date" autocomplete="off">
             </div>
           </div>
 

@@ -7,7 +7,7 @@ use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
-    return view('login');
+    return view('auth.pgc');
 });
 
 Route::get('/login', [LoginController::class, 'mostrarFormulario'])->name('login');

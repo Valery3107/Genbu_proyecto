@@ -1,14 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MascotaController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', function () {
-    return view('auth.pgc');
-})->name('login');
+Route::get('/login', [LoginController::class, 'mostrarFormulario'])->name('login');
+
+Route::post('/login', [LoginController::class, 'autenticar'])->name('login.autenticar');
 
 Route::get('/signup', function () {
     return view('auth.signup');
@@ -26,9 +28,7 @@ Route::get('/viewpet', function () {
     return view('auth.viewpet');
 })->name('viewpet');
 
-Route::post('/viewpet', function () {
-    return 'Formulario de mascota recibido (falta guardar en base de datos)';
-})->name('mascota.guardar');
+Route::post('/viewpet', [MascotaController::class, 'guardar'])->name('mascota.guardar');
 
 Route::get('/veterinario/registro', function () { 
     return view('auth.viewveterinary');

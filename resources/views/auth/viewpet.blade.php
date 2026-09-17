@@ -69,12 +69,32 @@
           </div>
 
           <div class="pet-row">
+            <label class="pet-label" for="colorPelajeMascota">
+                <img class="pet-label-icon" src="{{ asset('images/dog.png') }}" width="26" height="26" alt="" aria-hidden="true">
+                <span class="pet-label-text">Color de pelaje</span> 
+              </label>
+              <div class="pet-input-wrap"> 
+                <input id="colorPelajeMascota" name="colorPelajeMascota" type="text" autocomplete="off" placeholder="Ej. Dorado y blanco"> 
+            </div> 
+          </div>
+
+          <div class="pet-row">
             <label class="pet-label" for="propietarioMascota">
               <img class="pet-label-icon" src="{{ asset('images/user.png') }}" width="26" height="26" alt="" aria-hidden="true">
               <span class="pet-label-text">Propietario</span>
             </label>
             <div class="pet-input-wrap">
               <input id="propietarioMascota" name="propietarioMascota" type="text" autocomplete="name" placeholder="Nombre del tutor">
+            </div>
+          </div>
+
+          <div class="pet-row">
+            <label class="pet-label" for="telefonoTutorMascota">
+              <img class="pet-label-icon" src="{{ asset('images/user.png') }}" width="26" height="26" alt="" aria-hidden="true">
+              <span class="pet-label-text">Teléfono del tutor</span>
+            </label>
+            <div class="pet-input-wrap">
+              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="tel" autocomplete="off" placeholder="Ej. 300 123 4567">
             </div>
           </div>
         </form>
@@ -116,10 +136,6 @@
     </footer>
   </main>
 
-  <script>
-    document.getElementById("pet-profile-form").addEventListener("submit", function (e) {
-      e.preventDefault();
-    });
-  </script>
+
 </body>
 </html>

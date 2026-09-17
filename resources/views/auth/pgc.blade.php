@@ -250,20 +250,28 @@
         <div class="user-icon-top">
             <img src="{{ asset('images/login.png') }}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
         </div>
+        @if ($errors->any())
+          <div style="width:100%; background:#f6dede; color:#b5453a; padding:10px 14px; border-radius:10px; margin-bottom:14px; font-size:13px; font-weight:600; text-align:center;">
+            {{ $errors->first() }}
+          </div>
+        @endif
         <div class="login-title">LOGIN</div>
-        <div class="input-group-custom">
-          <span class="input-icon">
-            <img src="{{ asset('images/bichito.png') }}" style="width:20px; height:20px; object-fit:contain;">
-          </span>
-          <input type="text" placeholder="USUARIO">
-        </div>
-        <div class="input-group-custom">
-          <span class="input-icon">
-            <img src="{{ asset('images/candado.png') }}" style="width:20px; height:20px; object-fit:cover;">
-          </span>
-          <input type="password" placeholder="CONTRASEÑA">
-        </div>
-        <button type="button" class="btn-primary-genbu" id="btn-login-genbu">INICIAR SESIÓN</button>
+        <form method="post" action="{{ route('login.autenticar') }}" style="width:100%;">
+          @csrf
+          <div class="input-group-custom">
+            <span class="input-icon">
+              <img src="{{ asset('images/bichito.png') }}" style="width:20px; height:20px; object-fit:contain;">
+            </span>
+            <input type="email" name="correo" placeholder="CORREO" value="{{ old('correo') }}" required>
+          </div>
+          <div class="input-group-custom">
+            <span class="input-icon">
+              <img src="{{ asset('images/candado.png') }}" style="width:20px; height:20px; object-fit:cover;">
+            </span>
+            <input type="password" name="contrasena" placeholder="CONTRASEÑA" required>
+          </div>
+          <button type="submit" class="btn-primary-genbu">INICIAR SESIÓN</button>
+        </form>
         <a href="{{ route('password.solicitar') }}" class="link-text">¿Olvidaste tu contraseña?</a>
         <a href="{{ route('signup') }}" class="link-text">Crear una cuenta nueva</a>
       </div>
@@ -272,12 +280,7 @@
   </div>
 </div>
 
-<script>
-    document.getElementById("btn-login-genbu").addEventListener("click", function () {
-    window.location.href = "#";
-});
-  
-</script>
+
 
 </body>
 </html>

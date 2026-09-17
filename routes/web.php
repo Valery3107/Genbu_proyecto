@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MascotaController;
+use App\Http\Controllers\RegistroController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,13 +17,13 @@ Route::get('/signup', function () {
     return view('auth.signup');
 })->name('signup');
 
+Route::post('/signup', [RegistroController::class, 'validarCodigo'])->name('signup.validarCodigo');
+
 Route::get('/perfil-persona', function () {
     return view('auth.perfil-persona');
 })->name('perfil.crear');
 
-Route::post('/perfil-persona', function () {
-    return 'Formulario recibido (falta guardar en base de datos)';
-})->name('perfil.guardar');
+Route::post('/perfil-persona', [RegistroController::class, 'guardarDatosPersonales'])->name('perfil.guardar');
 
 Route::get('/viewpet', function () {
     return view('auth.viewpet');
@@ -34,9 +35,7 @@ Route::get('/veterinario/registro', function () {
     return view('auth.viewveterinary');
 })->name('veterinario.form');
 
- Route::post('/veterinario/registro', function () { 
-    return redirect()->route('login');
-})->name('veterinario.guardar');
+Route::post('/veterinario/registro', [RegistroController::class, 'guardarVeterinario'])->name('veterinario.guardar');
 
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');

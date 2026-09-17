@@ -26,6 +26,14 @@
     <section class="card card--signup" aria-label="Verificacion para crear cuenta">
       <span class="step-tag">Paso 1 de 2 - Verificación de identidad</span>
 
+    @if ($errors->any())
+      <div style="width:100%; background:#f6dede; color:#b5453a; padding:10px 14px; border-radius:10px; margin-bottom:14px; font-size:13px; font-weight:600; text-align:center;">
+        {{ $errors->first() }}
+      </div>
+    @endif
+
+    <form method="post" action="{{ route('signup.validarCodigo') }}">
+      @csrf
       <div class="content">
         <label class="field-label" for="accessCode">CÓDIGO ÚNICO DE ACCESO</label>
         <div class="input-group">
@@ -34,15 +42,16 @@
             <path d="M12 8h8v3h-2.2l-1.1 1.6h-1.9l-1 1.4H12V8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
             <path d="M2 8a7 7 0 1 0 14 0A7 7 0 0 0 2 8Z" stroke="currentColor" stroke-width="1.8"/>
           </svg>
-          <input id="accessCode" type="text" placeholder="Ej: GNB-2391-AX" autocomplete="off">
+          <input id="accessCode" name="accessCode" type="text" placeholder="Ej: GNB-2391-AX" autocomplete="off" value="{{ old('accessCode') }}" required>
         </div>
         <p class="help-text">Si no recuerdas el código, contacta con soporte técnico para validarlo.</p>
       </div>
 
       <div class="actions actions--signup">
-        <a class="btn--signup btn-primary" href="{{ route('perfil.crear') }}">CONTINUAR CREACIÓN DE CUENTA</a>
+        <button type="submit" class="btn--signup btn-primary">CONTINUAR CREACIÓN DE CUENTA</button>
         <a class="btn--signup btn-secondary" href="{{ route('login') }}">VOLVER A INICIO DE SESIÓN</a>
       </div>
+    </form>
     </section>
   </main>
 </body>

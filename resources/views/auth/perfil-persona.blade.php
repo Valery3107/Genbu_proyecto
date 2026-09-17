@@ -24,6 +24,10 @@
 
     <section class="card card--perfil" aria-label="Datos del perfil">
       <span class="step-tag">Paso 2 de 2 — Datos personales</span>
+       @if ($errors->any()) 
+       <div style="width:100%; background:#f6dede; color:#b5453a; padding:10px 14px; border-radius:10px; margin: 14px 0; font-size:13px; font-weight:600; text-align:center;"> {{ $errors->first() }} 
+        </div>
+         @endif
 
       <form class="form-grid" action="{{ route('perfil.guardar') }}" method="post">
       @csrf 
@@ -88,8 +92,7 @@
         </div>
 
         <div class="actions actions--perfil">
-          <button type="submit" class="btn--perfil btn-primary">Crear cuenta</button>
-          <a class="btn--perfil btn-secondary" href="{{ route('veterinario.form') }}">Continuar para veterinario</a>
+          <button type="submit" class="btn--perfil btn-primary">Continuar</button>
         </div>
       </form>
 

@@ -59,4 +59,9 @@ Route::middleware('verificar.sesion')->group(function () {
     Route::get('/dashboard/secretaria', [DashboardController::class, 'secretaria'])->middleware('verificar.rol:secretaria')->name('dashboard.secretaria');
     Route::get('/dashboard/administrador', [DashboardController::class, 'administrador'])->middleware('verificar.rol:administrador')->name('dashboard.administrador');
     Route::post('/logout', [LoginController::class, 'cerrarSesion'])->name('logout');
+
+    Route::get('/mascotas', [MascotaController::class, 'index'])->name('mascotas.index');
+    Route::get('/mascotas/{id}/editar', [MascotaController::class, 'editar'])->name('mascotas.editar');
+    Route::put('/mascotas/{id}', [MascotaController::class, 'actualizar'])->name('mascotas.actualizar');
+    Route::delete('/mascotas/{id}', [MascotaController::class, 'eliminar'])->name('mascotas.eliminar');
 });

@@ -26,15 +26,19 @@
       <section class="pet-form-panel" aria-labelledby="pet-form-title">
         <h2 id="pet-form-title" class="visually-hidden">Datos de la mascota</h2>
 
-        <form class="pet-form" id="pet-profile-form" action="{{ route('mascota.guardar') }}" method="post">
-         @csrf 
+        <form class="pet-form" id="pet-profile-form" action="{{ isset($mascota) ? route('mascotas.actualizar', $mascota->id_mascota) : route('mascota.guardar') }}" method="post">
+          @csrf
+          @if (isset($mascota))
+            @method('PUT')
+          @endif
+
           <div class="pet-row">
             <label class="pet-label" for="nombreMascota">
               <img class="pet-label-icon" src="{{ asset('images/paw.png') }}" width="26" height="26" alt="" aria-hidden="true">
               <span class="pet-label-text">Nombre</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="nombreMascota" name="nombreMascota" type="text" autocomplete="nickname" placeholder="Ej. Mia" autofocus>
+              <input id="nombreMascota" name="nombreMascota" type="text" autocomplete="nickname" placeholder="Ej. Mia" value="{{ old('nombreMascota', $mascota->nombre ?? '') }}" autofocus>
             </div>
           </div>
 
@@ -44,7 +48,7 @@
               <span class="pet-label-text">Fecha de nacimiento</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="fechaNacimientoMascota" name="fechaNacimientoMascota" type="date" autocomplete="off">
+              <input id="fechaNacimientoMascota" name="fechaNacimientoMascota" type="date" autocomplete="off" value="{{ old('fechaNacimientoMascota', $mascota->fecha_nacimiento ?? '') }}">
             </div>
           </div>
 
@@ -54,7 +58,7 @@
               <span class="pet-label-text">Raza</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="razaMascota" name="razaMascota" type="text" autocomplete="off" placeholder="Ej. Bichón frisé">
+              <input id="razaMascota" name="razaMascota" type="text" autocomplete="off" placeholder="Ej. Bichón frisé" value="{{ old('razaMascota', $mascota->raza ?? '') }}">
             </div>
           </div>
 
@@ -64,18 +68,18 @@
               <span class="pet-label-text">Sexo</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="sexoMascota" name="sexoMascota" type="text" autocomplete="off" placeholder="Ej. Hembra">
+              <input id="sexoMascota" name="sexoMascota" type="text" autocomplete="off" placeholder="Ej. Hembra" value="{{ old('sexoMascota', $mascota->sexo ?? '') }}">
             </div>
           </div>
 
           <div class="pet-row">
             <label class="pet-label" for="colorPelajeMascota">
-                <img class="pet-label-icon" src="{{ asset('images/dog.png') }}" width="26" height="26" alt="" aria-hidden="true">
-                <span class="pet-label-text">Color de pelaje</span> 
-              </label>
-              <div class="pet-input-wrap"> 
-                <input id="colorPelajeMascota" name="colorPelajeMascota" type="text" autocomplete="off" placeholder="Ej. Dorado y blanco"> 
-            </div> 
+              <img class="pet-label-icon" src="{{ asset('images/dog.png') }}" width="26" height="26" alt="" aria-hidden="true">
+              <span class="pet-label-text">Color de pelaje</span>
+            </label>
+            <div class="pet-input-wrap">
+              <input id="colorPelajeMascota" name="colorPelajeMascota" type="text" autocomplete="off" placeholder="Ej. Dorado y blanco" value="{{ old('colorPelajeMascota', $mascota->color_pelaje ?? '') }}">
+            </div>
           </div>
 
           <div class="pet-row">
@@ -84,7 +88,7 @@
               <span class="pet-label-text">Propietario</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="propietarioMascota" name="propietarioMascota" type="text" autocomplete="name" placeholder="Nombre del tutor">
+              <input id="propietarioMascota" name="propietarioMascota" type="text" autocomplete="name" placeholder="Nombre del tutor" value="{{ old('propietarioMascota', $mascota->tutor ?? '') }}">
             </div>
           </div>
 
@@ -94,10 +98,12 @@
               <span class="pet-label-text">Teléfono del tutor</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="tel" autocomplete="off" placeholder="Ej. 300 123 4567">
+              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="tel" autocomplete="off" placeholder="Ej. 300 123 4567" value="{{ old('telefonoTutorMascota', $mascota->telefono_tutor ?? '') }}">
             </div>
           </div>
         </form>
+       
+   
       </section>
 
       <aside class="pet-sidebar" aria-label="Foto y accesos rápidos">
@@ -129,10 +135,8 @@
     </div>
 
     <footer class="pet-footer-actions">
-      <button type="button" class="pet-btn-footer">Editar perfil</button>
       <button type="submit" form="pet-profile-form" class="pet-btn-footer">Guardar cambios</button>
-      <button type="button" class="pet-btn-footer">Agregar mascota</button>
-      <button type="button" class="pet-btn-footer pet-btn-footer--danger">Eliminar perfil</button>
+      <a href="{{ route('mascotas.index') }}" class="pet-btn-footer">Volver al listado</a>
     </footer>
   </main>
 

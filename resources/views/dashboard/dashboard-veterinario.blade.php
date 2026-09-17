@@ -148,7 +148,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
         Historial
       </a></li>
-      <li><a href="{{ route('veterinario.form') }}" class="nav-item">
+      <li><a href="#"  class="nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
         Mi perfil
       </a></li>
@@ -159,7 +159,10 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
         Nuevo caso
       </a>
-      <a href="{{ route('login') }}" class="logout-link">Cerrar sesión</a>
+      <form method="post" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" class="logout-link" style="background:none; border:none; cursor:pointer; padding:0; font:inherit;">Cerrar sesión</button>
+      </form>
     </div>
   </aside>
 

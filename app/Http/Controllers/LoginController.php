@@ -66,4 +66,23 @@ class LoginController extends Controller
             default => redirect()->route('login'),
         };
     }
+    public function cerrarSesion(Request $request)
+    {
+        $sesion = \App\Models\Sesion::where('id_usuario', $request->session()->get('usuario_id'))
+            ->where('activa', true)
+            ->latest('id_sesion')
+            ->first();
+
+        if ($sesion) {
+            $sesion->activa = false;
+            $sesion->fecha_expiracion = now();
+            $sesion->save();
+        }
+
+        $request->session()->forget(['usuario_id', 'usuario_nombre', 'usuario_rol']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('exito', 'Sesión cerrada correctamente.');
+    }
 }

@@ -136,7 +136,10 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
         Nueva mascota
       </a>
-      <a href="{{ route('login') }}" class="logout-link">Cerrar sesión</a>
+      <form method="post" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" class="logout-link" style="background:none; border:none; cursor:pointer; padding:0; font:inherit;">Cerrar sesión</button>
+      </form>
     </div>
   </aside>
 

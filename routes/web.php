@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MascotaController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,14 +54,9 @@ Route::post('/reset-password', function () {
     return 'Contraseña actualizada (falta implementar el guardado real)'; 
 })->name('password.actualizar');
 
- Route::get('/dashboard/veterinario', function () { 
-    return view('dashboard.dashboard-veterinario'); 
-})->name('dashboard.veterinario');
-
-Route::get('/dashboard/secretaria', function () {
-    return view('dashboard.dashboard-secretaria');
-})->name('dashboard.secretaria');
-
-Route::get('/dashboard/administrador', function () {
-    return view('dashboard.dashboard-administrador');
-})->name('dashboard.administrador');
+Route::middleware('verificar.sesion')->group(function () {
+    Route::get('/dashboard/veterinario', [DashboardController::class, 'veterinario'])->middleware('verificar.rol:veterinario')->name('dashboard.veterinario');
+    Route::get('/dashboard/secretaria', [DashboardController::class, 'secretaria'])->middleware('verificar.rol:secretaria')->name('dashboard.secretaria');
+    Route::get('/dashboard/administrador', [DashboardController::class, 'administrador'])->middleware('verificar.rol:administrador')->name('dashboard.administrador');
+    Route::post('/logout', [LoginController::class, 'cerrarSesion'])->name('logout');
+});

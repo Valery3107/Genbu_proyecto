@@ -1,59 +1,135 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GENBU
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto presenta un sistema web enfocado en la deteccion temprana de dermatitis canina mediante tecnicas de deep learning.
 
-## About Laravel
+Actualmente incluye el flujo completo de autenticacion, registro de usuarios con bifurcacion de rol, y la gestion CRUD de mascotas, todo con persistencia real en base de datos, como parte del primer incremento funcional de una plataforma orientada al apoyo veterinario.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Contexto del proyecto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+La dermatitis canina es una afeccion frecuente en perros y su identificacion oportuna puede mejorar el tratamiento y el bienestar animal.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+El objetivo de este sistema web es servir como soporte digital para:
 
-## Learning Laravel
+* Gestionar el registro de mascotas y sus tutores dentro de una clinica veterinaria.
+* Centralizar la informacion de usuarios (veterinarios, secretarias y administradores) y sus roles dentro de una experiencia web organizada.
+* Cargar y visualizar imagenes dermatologicas de pacientes caninos (proximo incremento).
+* Aplicar un modelo de deep learning para apoyar la deteccion de posibles lesiones (proximo incremento).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Estado actual
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+En esta version se encuentra implementado el primer incremento funcional del sistema:
 
-## Laravel Sponsors
+* Inicio de sesion con autenticacion real contra la base de datos, con redireccion automatica al panel correspondiente segun el rol del usuario (Veterinario, Secretaria/Auxiliar o Administrador).
+* Registro de usuario mediante codigo de acceso, con bifurcacion automatica de rol (los codigos de rol Veterinario solicitan datos profesionales adicionales antes de crear la cuenta).
+* Gestion CRUD completa (crear, consultar, editar, eliminar) sobre la entidad Mascota.
+* Middlewares de seguridad que protegen las rutas segun sesion activa y rol autorizado.
+* Base de datos implementada en MySQL, con 10 entidades normalizadas, a partir del modelo Entidad-Relacion diseñado en StarUML.
+* 11 pruebas unitarias automatizadas sobre la logica de negocio del sistema.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Estructura del proyecto
 
-### Premium Partners
+```
+genbu/
+|- app/
+|   |- Http/
+|   |   |- Controllers/       # LoginController, RegistroController, MascotaController, DashboardController
+|   |   `- Middleware/        # VerificarSesion, VerificarRol
+|   `- Models/                # Usuario, Mascota, Veterinario, SecretariaAuxiliar, CodigoAcceso, etc.
+|- database/
+|   |- migrations/            # Script de creacion de las 10 tablas del sistema
+|   `- seeders/                # AdminSeeder (datos de prueba)
+|- public/
+|   |- css/                    # Hojas de estilo de las vistas
+|   `- images/                 # Recursos graficos usados por las interfaces
+|- resources/
+|   `- views/
+|       |- auth/                # Vistas de login, registro y recuperacion de contraseña
+|       `- dashboard/           # Paneles por rol y listado de mascotas
+|- routes/
+|   `- web.php                  # Definicion de rutas
+|- tests/
+|   `- Feature/
+|       `- LogicaNegocioTest.php  # Pruebas unitarias
+`- README.md
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Nota: las vistas hacen referencia a imagenes como `images/logo.png`, `images/paw.png`, etc., ubicadas en `public/images/`. Asegurate de mantener esa carpeta y esos nombres de archivo para que las vistas carguen correctamente.
 
-## Contributing
+## Tecnologias usadas
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* PHP + Laravel (backend, arquitectura por capas)
+* HTML5, CSS3, JavaScript, Blade (frontend)
+* MySQL (base de datos, gestionada con phpMyAdmin)
+* XAMPP (Apache + MySQL, entorno de desarrollo local)
+* Bootstrap 5 (CDN) y Google Fonts (CDN)
+* Git y GitHub (control de versiones)
+* PHPUnit (pruebas unitarias)
 
-## Code of Conduct
+## Como ejecutar el proyecto
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Este proyecto ya no corre de forma local sin servidor; requiere PHP, Composer y un servidor de base de datos MySQL en funcionamiento.
 
-## Security Vulnerabilities
+1. Clona el repositorio dentro de la carpeta `htdocs` de tu instalacion de XAMPP:
+   ```bash
+   cd C:\xampp\htdocs
+   git clone <URL-del-repositorio> genbu
+   cd genbu
+   ```
+2. Instala las dependencias de PHP:
+   ```bash
+   composer install
+   ```
+3. Copia el archivo de entorno y genera la clave de la aplicacion:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+4. Configura la conexion a la base de datos en el archivo `.env` segun tu instalacion local de XAMPP:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=genbu
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
+5. Crea, desde phpMyAdmin, una base de datos vacia llamada exactamente `genbu` (cotejamiento `utf8mb4_unicode_ci`).
+6. Ejecuta las migraciones para crear las 10 tablas del sistema:
+   ```bash
+   php artisan migrate
+   ```
+7. Carga los datos de prueba (incluye la primera cuenta de Administrador):
+   ```bash
+   php artisan db:seed --class=AdminSeeder
+   ```
+8. Con Apache corriendo en XAMPP, accede desde el navegador a:
+   ```
+   http://localhost/genbu/public/login
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Usuarios de prueba
 
-## License
+| Rol | Correo | Contraseña |
+|---|---|---|
+| Administrador | admin@genbu.com | admin1234 |
+| Veterinario | valentina.torres@genbu.com | vet12345 |
+| Secretaria | camila.rojas@genbu.com | sec12345 |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Ejecutar las pruebas unitarias
+
+```bash
+php artisan test
+```
+
+## Proximos pasos sugeridos
+
+* Integrar el modulo de carga y analisis de imagenes dermatologicas.
+* Enlazar un modelo de deep learning entrenado (TensorFlow) para la clasificacion de dermatitis canina, una vez curado el dataset.
+* Agregar una vista de historial clinico y de resultados con recomendaciones para apoyo al diagnostico.
+* Implementar la generacion y descarga de reportes en PDF.
+* Conectar el envio real de correo para la recuperacion de contraseña.
+* Construir el panel de gestion de usuarios y codigos de acceso para el rol Administrador.
+
+## Nota sobre el archivo `.env`
+
+El archivo `.env` no se incluye en el repositorio (esta excluido en `.gitignore`) por seguridad, ya que contiene credenciales de conexion a la base de datos. Cada persona que clone el proyecto debe crear su propio `.env` siguiendo el paso 3.

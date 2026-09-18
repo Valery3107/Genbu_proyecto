@@ -121,15 +121,4 @@ Este proyecto ya no corre de forma local sin servidor; requiere PHP, Composer y 
 php artisan test
 ```
 
-## Proximos pasos sugeridos
 
-* Integrar el modulo de carga y analisis de imagenes dermatologicas.
-* Enlazar un modelo de deep learning entrenado (TensorFlow) para la clasificacion de dermatitis canina, una vez curado el dataset.
-* Agregar una vista de historial clinico y de resultados con recomendaciones para apoyo al diagnostico.
-* Implementar la generacion y descarga de reportes en PDF.
-* Conectar el envio real de correo para la recuperacion de contraseña.
-* Construir el panel de gestion de usuarios y codigos de acceso para el rol Administrador.
-
-## Nota sobre el archivo `.env`
-
-El archivo `.env` no se incluye en el repositorio (esta excluido en `.gitignore`) por seguridad, ya que contiene credenciales de conexion a la base de datos. Cada persona que clone el proyecto debe crear su propio `.env` siguiendo el paso 3.

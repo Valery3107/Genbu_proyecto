@@ -158,4 +158,106 @@ class LogicaNegocioTest extends TestCase
 
         $response->assertRedirect(route('login'));
     }
+
+    // ===== 5. CRUD DE MASCOTA =====
+
+public function test_registrar_mascota_con_sesion_activa_guarda_correctamente(): void
+{
+    $usuario = Usuario::create([
+        'nombre_completo' => 'Test Vet CRUD',
+        'correo' => 'test.vet.crud@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '6666666666',
+        'telefono' => '3000000000',
+        'rol' => 'veterinario',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $response = $this->withSession([
+        'usuario_id' => $usuario->id_usuario,
+        'usuario_nombre' => $usuario->nombre_completo,
+        'usuario_rol' => $usuario->rol,
+    ])->post('/viewpet', [
+        'nombreMascota' => 'Rex',
+        'fechaNacimientoMascota' => '2023-01-01',
+        'razaMascota' => 'Labrador',
+        'sexoMascota' => 'Macho',
+        'colorPelajeMascota' => 'Dorado',
+        'propietarioMascota' => 'Juan Perez',
+        'telefonoTutorMascota' => '3001112233',
+    ]);
+
+    $response->assertRedirect(route('mascotas.index'));
+    $this->assertDatabaseHas('mascotas', ['nombre' => 'Rex', 'raza' => 'Labrador']);
+}
+
+public function test_actualizar_mascota_modifica_los_datos_correctamente(): void
+{
+    $usuario = Usuario::create([
+        'nombre_completo' => 'Test Sec CRUD',
+        'correo' => 'test.sec.crud@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '5555555555',
+        'telefono' => '3000000000',
+        'rol' => 'secretaria',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $mascota = \App\Models\Mascota::create([
+        'id_usuario' => $usuario->id_usuario,
+        'nombre' => 'Firulais',
+        'especie' => 'Canina',
+        'raza' => 'Criollo',
+        'sexo' => 'Macho',
+        'tutor' => 'Pedro Gomez',
+    ]);
+
+    $response = $this->withSession([
+        'usuario_id' => $usuario->id_usuario,
+        'usuario_nombre' => $usuario->nombre_completo,
+        'usuario_rol' => $usuario->rol,
+    ])->put("/mascotas/{$mascota->id_mascota}", [
+        'nombreMascota' => 'Firulais',
+        'razaMascota' => 'Poodle',
+        'sexoMascota' => 'Macho',
+        'propietarioMascota' => 'Pedro Gomez',
+    ]);
+
+    $response->assertRedirect(route('mascotas.index'));
+    $this->assertDatabaseHas('mascotas', ['id_mascota' => $mascota->id_mascota, 'raza' => 'Poodle']);
+}
+
+public function test_eliminar_mascota_la_remueve_de_la_base_de_datos(): void
+{
+    $usuario = Usuario::create([
+        'nombre_completo' => 'Test Sec CRUD 2',
+        'correo' => 'test.sec.crud2@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '4444444444',
+        'telefono' => '3000000000',
+        'rol' => 'secretaria',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $mascota = \App\Models\Mascota::create([
+        'id_usuario' => $usuario->id_usuario,
+        'nombre' => 'Luna',
+        'especie' => 'Canina',
+        'raza' => 'Criollo',
+        'sexo' => 'Hembra',
+        'tutor' => 'Ana Diaz',
+    ]);
+
+    $response = $this->withSession([
+        'usuario_id' => $usuario->id_usuario,
+        'usuario_nombre' => $usuario->nombre_completo,
+        'usuario_rol' => $usuario->rol,
+    ])->delete("/mascotas/{$mascota->id_mascota}");
+
+    $response->assertRedirect(route('mascotas.index'));
+    $this->assertDatabaseMissing('mascotas', ['id_mascota' => $mascota->id_mascota]);
+}
 }

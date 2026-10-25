@@ -10,41 +10,25 @@ jobs:
   pruebas:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-          MYSQL_DATABASE: genbu_test
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Descargar codigo
+        uses: actions/checkout@v4
 
-      - uses: shivammathur/setup-php@v2
+      - name: Configurar PHP y extensiones
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: mbstring, pdo_mysql, xml, ctype, iconv
+          extensions: mbstring, xml, ctype, iconv, intl, dom, libxml, pdo_sqlite, sqlite3
+          coverage: none
 
-      - run: composer install --no-interaction --prefer-dist
+      - name: Copiar archivo de entorno
+        run: cp .env.example .env
 
-      - run: cp .env.example .env
+      - name: Instalar dependencias de Composer
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
 
-      - run: php artisan key:generate
+      - name: Generar Application Key
+        run: php artisan key:generate
 
-      - name: Ejecutar pruebas
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: genbu_test
-          DB_USERNAME: root
-          DB_PASSWORD: ""
+      - name: Ejecutar pruebas automatizadas
         run: php artisan test
-        

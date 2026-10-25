@@ -26,11 +26,19 @@
       <section class="pet-form-panel" aria-labelledby="pet-form-title">
         <h2 id="pet-form-title" class="visually-hidden">Datos de la mascota</h2>
 
-        <form class="pet-form" id="pet-profile-form" action="{{ isset($mascota) ? route('mascotas.actualizar', $mascota->id_mascota) : route('mascota.guardar') }}" method="post">
+                <form class="pet-form" id="pet-profile-form" action="{{ isset($mascota) ? route('mascotas.actualizar', $mascota->id_mascota) : route('mascota.guardar') }}" method="post">
           @csrf
           @if (isset($mascota))
             @method('PUT')
           @endif
+
+          @if ($errors->any())
+            <div style="background:#f6dede; color:#c96b5a; padding:10px 14px; border-radius:12px; font-weight:700; font-size:13px; margin-bottom:12px;">
+              {{ $errors->first() }}
+            </div>
+          @endif
+
+  
 
           <div class="pet-row">
             <label class="pet-label" for="nombreMascota">
@@ -98,7 +106,7 @@
               <span class="pet-label-text">Teléfono del tutor</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="tel" autocomplete="off" placeholder="Ej. 300 123 4567" value="{{ old('telefonoTutorMascota', $mascota->tutor->telefono ?? '') }}">
+              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="text" inputmode="numeric" maxlength="10" pattern="(3[0-9]{9}|60[1-8][0-9]{7})" title="10 dígitos: celular (3001234567) o fijo con 60 + indicativo (6011234567)" autocomplete="off" placeholder="Ej. 3001234567 o 6011234567" value="{{ old('telefonoTutorMascota', $mascota->tutor->telefono ?? '') }}">
             </div>
           </div>
         </form>

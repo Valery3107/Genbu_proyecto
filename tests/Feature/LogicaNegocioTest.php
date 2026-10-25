@@ -342,4 +342,81 @@ public function test_telefono_invalido_del_tutor_es_rechazado(string $telefono):
     $this->assertDatabaseCount('mascotas', 0);
     $this->assertDatabaseCount('tutores', 0);
 }
+// ===== VALIDACIÓN DE DOCUMENTO Y TELÉFONO EN REGISTRO DE USUARIO =====
+
+    #[DataProvider('proveedorDocumentosInvalidos')]
+public function test_documento_invalido_de_usuario_es_rechazado(string $documentoInvalido): void
+    {
+        $codigo = CodigoAcceso::create([
+            'codigo' => 'TEST-DOC-' . uniqid(),
+            'rol_asignado' => 'secretaria',
+            'usado' => false,
+            'fecha_generacion' => now(),
+        ]);
+
+        $response = $this->withSession([
+            'registro_codigo_id' => $codigo->id_codigo,
+            'registro_rol' => 'secretaria',
+        ])->post('/perfil-persona', [
+            'nombreCompleto' => 'Prueba Doc',
+            'correo' => 'usuario.doc@genbu.com',
+            'contrasena' => 'password123',
+            'confirmarContrasena' => 'password123',
+            'documento' => $documentoInvalido,
+            'telefono' => '3001234567',
+        ]);
+
+        $response->assertSessionHasErrors('documento');
+    }
+
+    public static function proveedorDocumentosInvalidos(): array
+    {
+        return [
+            'con letras' => ['12345ABC'],
+            'muy corto (menos de 6)' => ['12345'],
+            'muy largo (mas de 10)' => ['12345678901'],
+            'con puntos' => ['1.234.567'],
+            'con guiones' => ['123-456-78'],
+        ];
+    }
+
+    #[DataProvider('proveedorTelefonosInvalidosUsuario')]
+public function test_telefono_invalido_de_usuario_es_rechazado(string $telefonoInvalido): void
+
+   
+
+    {
+        $codigo = CodigoAcceso::create([
+            'codigo' => 'TEST-TEL-' . uniqid(),
+            'rol_asignado' => 'secretaria',
+            'usado' => false,
+            'fecha_generacion' => now(),
+        ]);
+
+        $response = $this->withSession([
+            'registro_codigo_id' => $codigo->id_codigo,
+            'registro_rol' => 'secretaria',
+        ])->post('/perfil-persona', [
+            'nombreCompleto' => 'Prueba Tel',
+            'correo' => 'usuario.tel@genbu.com',
+            'contrasena' => 'password123',
+            'confirmarContrasena' => 'password123',
+            'documento' => '1020304050',
+            'telefono' => $telefonoInvalido,
+        ]);
+
+        $response->assertSessionHasErrors('telefono');
+    }
+
+    public static function proveedorTelefonosInvalidosUsuario(): array
+    {
+        return [
+            'con letras' => ['300abc1234'],
+            'once digitos' => ['30012345678'],
+            'con espacios' => ['300 123 4567'],
+            'con guiones' => ['300-123-4567'],
+            'con signo mas' => ['+573001234567'],
+            'muy corto' => ['30012'],
+        ];
+    }
 }

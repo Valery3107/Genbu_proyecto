@@ -50,8 +50,13 @@ class RegistroController extends Controller
             'correo' => 'required|email|unique:usuarios,correo',
             'contrasena' => 'required|string|min:8',
             'confirmarContrasena' => 'required|string',
-            'documento' => 'required|string|unique:usuarios,numero_documento',
-            'telefono' => 'nullable|string|max:255',
+            'documento' => 'required|regex:/^[0-9]{6,10}$/|unique:usuarios,numero_documento',
+            'telefono' => 'nullable|regex:/^[0-9]{10}$/',
+        ], [
+            'documento.required' => 'El número de documento es obligatorio.',
+            'documento.regex' => 'El número de documento debe contener solo dígitos numéricos (entre 6 y 10).',
+            'documento.unique' => 'Este número de documento ya se encuentra registrado.',
+            'telefono.regex' => 'El número de teléfono debe contener exactamente 10 dígitos numéricos sin símbolos ni espacios.',
         ]);
 
         if ($datos['contrasena'] !== $datos['confirmarContrasena']) {

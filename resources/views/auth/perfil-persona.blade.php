@@ -74,7 +74,7 @@
         <div class="form-row">
           <label class="row-label" for="documento">Número de documento</label>
           <div class="row-input-wrap">
-            <input id="documento" name="documento" type="text" inputmode="numeric" autocomplete="off" placeholder="Sin puntos ni espacios" required>
+            <input id="documento" name="documento" type="text" inputmode="numeric" pattern="[0-9]{6,10}" maxlength="10" value="{{ old('documento') }}" required>
           </div>
           <div class="row-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h4M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -84,7 +84,7 @@
         <div class="form-row">
           <label class="row-label" for="telefono">Teléfono de contacto</label>
           <div class="row-input-wrap">
-            <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="Ej: 300 123 4567" required>
+            <input id="telefono" name="telefono" type="tel" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" value="{{ old('telefono') }}">
           </div>
           <div class="row-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none"><path d="M8 3h3l2 5-2 1a11 11 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A17 17 0 0 1 8 5a2 2 0 0 1 0-2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>

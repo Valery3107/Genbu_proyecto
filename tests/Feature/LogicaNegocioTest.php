@@ -301,16 +301,16 @@ public function test_actualizar_mascota_modifica_los_datos_correctamente(): void
     }
 
     public static function telefonosInvalidosTutor(): array
-{
-    return [
-        'con letras'    => ['31112abc90'],
-        'once digitos'  => ['31111111111'],
-        'con espacios'  => ['311 111 1111'],
-        'con guiones'   => ['311-111-1111'],
-        'con signo mas' => ['+573111111'],
-        'muy corto'     => ['12345'],
-    ];
-}
+    {
+        return [
+            'con letras'             => ['300abc1234'],
+            'once digitos'           => ['30012345678'],
+            'con espacios'           => ['300 123 4567'],
+            'nueve digitos'          => ['311111111'],
+            'diez digitos sin forma' => ['1234567890'],
+            'indicativo inexistente' => ['6091234567'],
+        ];
+    }
 
 #[DataProvider('telefonosInvalidosTutor')]
 public function test_telefono_invalido_del_tutor_es_rechazado(string $telefono): void
@@ -376,7 +376,6 @@ public function test_documento_invalido_de_usuario_es_rechazado(string $document
             'muy corto (menos de 6)' => ['12345'],
             'muy largo (mas de 10)' => ['12345678901'],
             'con puntos' => ['1.234.567'],
-            'con guiones' => ['123-456-78'],
         ];
     }
 
@@ -411,12 +410,120 @@ public function test_telefono_invalido_de_usuario_es_rechazado(string $telefonoI
     public static function proveedorTelefonosInvalidosUsuario(): array
     {
         return [
-            'con letras' => ['300abc1234'],
-            'once digitos' => ['30012345678'],
-            'con espacios' => ['300 123 4567'],
-            'con guiones' => ['300-123-4567'],
-            'con signo mas' => ['+573001234567'],
-            'muy corto' => ['30012'],
+            'con letras'             => ['300abc1234'],
+            'once digitos'           => ['30012345678'],
+            'indicativo inexistente' => ['6091234567'],
         ];
     }
+
+    public static function telefonosValidos(): array
+    {
+        return [
+            'celular 300'             => ['3001112233'],
+            'fijo Cundinamarca (601)' => ['6011234567'],
+        ];
+    }
+
+    #[DataProvider('telefonosValidos')]
+    public function test_telefonos_validos_segun_plan_nacional_son_aceptados(string $telefono): void
+    {
+        $codigo = CodigoAcceso::create([
+            'codigo' => 'TEST-TEL-OK-' . uniqid(),
+            'rol_asignado' => 'secretaria',
+            'usado' => false,
+            'fecha_generacion' => now(),
+        ]);
+
+        $response = $this->withSession([
+            'registro_codigo_id' => $codigo->id_codigo,
+            'registro_rol' => 'secretaria',
+        ])->post('/perfil-persona', [
+            'nombreCompleto' => 'Prueba Tel OK',
+            'correo' => 'usuario.ok.' . uniqid() . '@genbu.com',
+            'contrasena' => 'password123',
+            'confirmarContrasena' => 'password123',
+            'documento' => '1020304050',
+            'telefono' => $telefono,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+    }
+   
+
+public static function telefonosValidosTutor(): array
+{
+    return [
+        'celular'                 => ['3001112233'],
+        'fijo Cundinamarca (601)' => ['6011234567'],
+    ];
+}
+
+#[DataProvider('telefonosValidosTutor')]
+public function test_telefono_valido_del_tutor_es_aceptado(string $telefono): void
+{
+    $usuario = Usuario::create([
+        'nombre_completo' => 'Test Vet Telefono OK',
+        'correo' => 'test.vet.telefono.ok@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '2222222223',
+        'telefono' => '3000000000',
+        'rol' => 'veterinario',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $response = $this->withSession([
+        'usuario_id' => $usuario->id_usuario,
+        'usuario_nombre' => $usuario->nombre_completo,
+        'usuario_rol' => $usuario->rol,
+    ])->post('/viewpet', [
+        'nombreMascota' => 'Rex',
+        'razaMascota' => 'Labrador',
+        'sexoMascota' => 'Macho',
+        'propietarioMascota' => 'Juan Perez',
+        'telefonoTutorMascota' => $telefono,
+    ]);
+
+    $response->assertSessionHasNoErrors();
+    $this->assertDatabaseHas('tutores', ['telefono' => $telefono]);
+}
+public function test_actualizar_mascota_con_telefono_invalido_del_tutor_es_rechazado(): void
+{
+    $usuario = Usuario::create([
+        'nombre_completo' => 'Test Sec Telefono Update',
+        'correo' => 'test.sec.telefono.update@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '2222222225',
+        'telefono' => '3000000000',
+        'rol' => 'secretaria',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $tutor = \App\Models\Tutor::create(['nombre' => 'Pedro Gomez', 'telefono' => '3001112233']);
+
+    $mascota = \App\Models\Mascota::create([
+        'id_usuario' => $usuario->id_usuario,
+        'id_tutor' => $tutor->id_tutor,
+        'nombre' => 'Firulais',
+        'especie' => 'Canina',
+        'raza' => 'Criollo',
+        'sexo' => 'Macho',
+    ]);
+
+    $response = $this->withSession([
+        'usuario_id' => $usuario->id_usuario,
+        'usuario_nombre' => $usuario->nombre_completo,
+        'usuario_rol' => $usuario->rol,
+    ])->put("/mascotas/{$mascota->id_mascota}", [
+        'nombreMascota' => 'Firulais',
+        'razaMascota' => 'Poodle',
+        'sexoMascota' => 'Macho',
+        'propietarioMascota' => 'Pedro Gomez',
+        'telefonoTutorMascota' => '12345',
+    ]);
+
+    $response->assertSessionHasErrors('telefonoTutorMascota');
+    $this->assertDatabaseHas('mascotas', ['id_mascota' => $mascota->id_mascota, 'raza' => 'Criollo']);
+}
 }

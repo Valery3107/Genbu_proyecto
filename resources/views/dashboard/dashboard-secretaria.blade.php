@@ -178,7 +178,7 @@
             @forelse (($registrosRecientes ?? []) as $r)
               <tr>
                 <td>{{ $r['mascota'] }}</td>
-                <td>{{ $r['tutor'] }}</td>
+                <td>{{ is_array($r['tutor'] ?? null) ? ($r['tutor']['nombre'] ?? '—') : ($r['tutor']->nombre ?? $r['tutor'] ?? '—') }}</td>
                 <td>{{ $r['fecha'] }}</td>
                 <td><span class="badge badge-ok">Registrado</span></td>
               </tr>

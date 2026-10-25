@@ -9,6 +9,7 @@ use App\Models\CodigoAcceso;
 use App\Models\Veterinario;
 use App\Models\SecretariaAuxiliar;
 use App\Models\Mascota;
+use App\Models\Tutor;
 
 class AdminSeeder extends Seeder
 {
@@ -85,26 +86,34 @@ class AdminSeeder extends Seeder
         ]);
 
         // 5. Dos mascotas de ejemplo, registradas por la secretaria
+        $tutorMia = Tutor::firstOrCreate(
+            ['nombre' => 'Laura Gómez', 'telefono' => '3111111111']
+        );
+
         Mascota::create([
             'id_usuario' => $usuarioSec->id_usuario,
+            'id_tutor' => $tutorMia->id_tutor,
             'nombre' => 'Mia',
             'especie' => 'Canina',
             'raza' => 'Bichón frisé',
             'sexo' => 'Hembra',
             'fecha_nacimiento' => '2023-04-12',
-            'tutor' => 'Laura Gómez',
-            'telefono_tutor' => '3111111111',
         ]);
+
+        $tutorRocco = Tutor::firstOrCreate(
+            ['nombre' => 'Andrés Pérez', 'telefono' => '3222222222']
+        );
 
         Mascota::create([
             'id_usuario' => $usuarioSec->id_usuario,
+            'id_tutor' => $tutorRocco->id_tutor,
             'nombre' => 'Rocco',
             'especie' => 'Canina',
             'raza' => 'Labrador',
             'sexo' => 'Macho',
             'fecha_nacimiento' => '2022-01-20',
-            'tutor' => 'Andrés Pérez',
-            'telefono_tutor' => '3222222222',
         ]);
     }
 }
+    
+

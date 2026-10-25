@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Mascota extends Model
 {
@@ -12,15 +13,19 @@ class Mascota extends Model
 
     protected $fillable = [
         'id_usuario',
+        'id_tutor',
         'nombre',
         'especie',
         'raza',
         'sexo',
         'color_pelaje',
         'fecha_nacimiento',
-        'tutor',
-        'telefono_tutor',
         'foto',
         'observaciones',
     ];
+
+    public function tutor(): BelongsTo
+    {
+        return $this->belongsTo(Tutor::class, 'id_tutor', 'id_tutor');
+    }
 }

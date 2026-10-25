@@ -165,8 +165,8 @@
               <td>{{ $mascota->nombre }}</td>
               <td>{{ $mascota->raza }}</td>
               <td>{{ $mascota->sexo }}</td>
-              <td>{{ $mascota->tutor }}</td>
-              <td>{{ $mascota->telefono_tutor ?? '—' }}</td>
+              <td>{{ $mascota->tutor->nombre ?? '—' }}</td>
+              <td>{{ $mascota->tutor->telefono ?? '—' }}</td> 
               <td>
                 <div style="display:flex; gap:6px;">
                   <a href="{{ route('mascotas.editar', $mascota->id_mascota) }}" class="accion-btn accion-editar">Editar</a>

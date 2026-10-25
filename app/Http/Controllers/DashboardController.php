@@ -20,9 +20,23 @@ class DashboardController extends Controller
 
     public function secretaria(Request $request)
     {
+        $ultimasMascotas = Mascota::with('tutor')
+            ->orderBy('id_mascota', 'desc')
+            ->take(5)
+            ->get();
+
+        $registrosRecientes = $ultimasMascotas->map(function ($mascota) {
+            return [
+                'mascota' => $mascota->nombre,
+                'tutor' => $mascota->tutor->nombre ?? 'Sin tutor',
+                'fecha' => $mascota->fecha_nacimiento ?? 'No registrada',
+            ];
+        })->toArray();
+
         return view('dashboard.dashboard-secretaria', [
             'nombre' => $request->session()->get('usuario_nombre'),
             'totalMascotas' => Mascota::count(),
+            'registrosRecientes' => $registrosRecientes,
         ]);
     }
 

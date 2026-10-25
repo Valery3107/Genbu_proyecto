@@ -88,7 +88,7 @@
               <span class="pet-label-text">Propietario</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="propietarioMascota" name="propietarioMascota" type="text" autocomplete="name" placeholder="Nombre del tutor" value="{{ old('propietarioMascota', $mascota->tutor ?? '') }}">
+              <input id="propietarioMascota" name="propietarioMascota" type="text" autocomplete="name" placeholder="Nombre del tutor" value="{{ old('propietarioMascota', $mascota->tutor->nombre ?? '') }}">
             </div>
           </div>
 
@@ -98,7 +98,7 @@
               <span class="pet-label-text">Teléfono del tutor</span>
             </label>
             <div class="pet-input-wrap">
-              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="tel" autocomplete="off" placeholder="Ej. 300 123 4567" value="{{ old('telefonoTutorMascota', $mascota->telefono_tutor ?? '') }}">
+              <input id="telefonoTutorMascota" name="telefonoTutorMascota" type="tel" autocomplete="off" placeholder="Ej. 300 123 4567" value="{{ old('telefonoTutorMascota', $mascota->tutor->telefono ?? '') }}">
             </div>
           </div>
         </form>

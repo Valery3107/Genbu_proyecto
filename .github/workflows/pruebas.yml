@@ -31,4 +31,12 @@ jobs:
         run: php artisan key:generate
 
       - name: Ejecutar pruebas automatizadas
-        run: php artisan test
+        shell: bash
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: |
+          php artisan test 2>&1 | tee resultado.txt
+          status=${PIPESTATUS[0]}
+          { echo '```'; tail -n 60 resultado.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit $status

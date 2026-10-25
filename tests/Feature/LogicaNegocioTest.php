@@ -7,6 +7,7 @@ use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class LogicaNegocioTest extends TestCase
 {
@@ -298,4 +299,47 @@ public function test_actualizar_mascota_modifica_los_datos_correctamente(): void
         $this->assertDatabaseCount('tutores', 1);
         $this->assertDatabaseCount('mascotas', 2);
     }
+
+    public static function telefonosInvalidosTutor(): array
+{
+    return [
+        'con letras'    => ['31112abc90'],
+        'once digitos'  => ['31111111111'],
+        'con espacios'  => ['311 111 1111'],
+        'con guiones'   => ['311-111-1111'],
+        'con signo mas' => ['+573111111'],
+        'muy corto'     => ['12345'],
+    ];
+}
+
+#[DataProvider('telefonosInvalidosTutor')]
+public function test_telefono_invalido_del_tutor_es_rechazado(string $telefono): void
+{
+    $usuario = Usuario::create([
+        'nombre_completo' => 'Test Vet Telefono',
+        'correo' => 'test.vet.telefono@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '2222222222',
+        'telefono' => '3000000000',
+        'rol' => 'veterinario',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $response = $this->withSession([
+        'usuario_id' => $usuario->id_usuario,
+        'usuario_nombre' => $usuario->nombre_completo,
+        'usuario_rol' => $usuario->rol,
+    ])->post('/viewpet', [
+        'nombreMascota' => 'Rex',
+        'razaMascota' => 'Labrador',
+        'sexoMascota' => 'Macho',
+        'propietarioMascota' => 'Juan Perez',
+        'telefonoTutorMascota' => $telefono,
+    ]);
+
+    $response->assertSessionHasErrors('telefonoTutorMascota');
+    $this->assertDatabaseCount('mascotas', 0);
+    $this->assertDatabaseCount('tutores', 0);
+}
 }

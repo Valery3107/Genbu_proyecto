@@ -24,7 +24,7 @@ class MascotaController extends Controller
             'sexoMascota' => 'required|string|max:255',
             'colorPelajeMascota' => 'nullable|string|max:255',
             'propietarioMascota' => 'required|string|max:255',
-            'telefonoTutorMascota' => ['nullable', 'regex:/^(3\d{9}|60[1-8]\d{7})$/'],
+            'telefonoTutorMascota' => ['nullable', 'regex:/^(3[0-9]{9}|60[1-8][0-9]{7})$/'],
         ], [
     'telefonoTutorMascota.regex' => 'Escribe un número de 10 dígitos: celular (3001234567) o fijo con 60 + indicativo (6011234567).',
 ]);

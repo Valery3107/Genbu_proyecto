@@ -8,6 +8,7 @@ use App\Models\Veterinario;
 use App\Models\SecretariaAuxiliar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class RegistroController extends Controller
 {
@@ -51,12 +52,13 @@ class RegistroController extends Controller
             'contrasena' => 'required|string|min:8',
             'confirmarContrasena' => 'required|string',
             'documento' => 'required|regex:/^[0-9]{6,10}$/|unique:usuarios,numero_documento',
-            'telefono' => 'nullable|regex:/^[0-9]{10}$/',
+            'telefono' => ['nullable', 'regex:/^(3[0-9]{9}|60[1-8][0-9]{7})$/'],
+           
         ], [
             'documento.required' => 'El número de documento es obligatorio.',
             'documento.regex' => 'El número de documento debe contener solo dígitos numéricos (entre 6 y 10).',
             'documento.unique' => 'Este número de documento ya se encuentra registrado.',
-            'telefono.regex' => 'El número de teléfono debe contener exactamente 10 dígitos numéricos sin símbolos ni espacios.',
+            'telefono.regex' => 'El teléfono debe ser un celular válido (ej. 3001234567) o un fijo nacional con indicativo válido (ej. 6011234567).',
         ]);
 
         if ($datos['contrasena'] !== $datos['confirmarContrasena']) {

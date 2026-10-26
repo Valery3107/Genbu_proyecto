@@ -408,13 +408,13 @@ public function test_telefono_invalido_de_usuario_es_rechazado(string $telefonoI
     }
 
     public static function proveedorTelefonosInvalidosUsuario(): array
-    {
-        return [
-            'con letras'             => ['300abc1234'],
-            'once digitos'           => ['30012345678'],
-            'indicativo inexistente' => ['6091234567'],
-        ];
-    }
+{
+    return [
+        'con letras'           => ['300abc1234'],
+        'once digitos'         => ['30012345678'],
+        'indicativo inexistente' => ['6091234567'], // Asegúrate de que esto no sea null
+    ];
+}
 
     public static function telefonosValidos(): array
     {

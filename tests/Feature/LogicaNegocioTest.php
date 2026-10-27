@@ -526,4 +526,24 @@ public function test_actualizar_mascota_con_telefono_invalido_del_tutor_es_recha
     $response->assertSessionHasErrors('telefonoTutorMascota');
     $this->assertDatabaseHas('mascotas', ['id_mascota' => $mascota->id_mascota, 'raza' => 'Criollo']);
 }
+public function test_comando_genera_codigo_de_acceso_para_el_rol_indicado(): void
+{
+    Usuario::create([
+        'nombre_completo' => 'Admin Test Comando',
+        'correo' => 'admin.test.comando@genbu.com',
+        'contrasena' => Hash::make('clave1234'),
+        'numero_documento' => '1111111119',
+        'telefono' => '3000000000',
+        'rol' => 'administrador',
+        'estado' => 'activo',
+        'fecha_registro' => now(),
+    ]);
+
+    $this->artisan('genbu:codigo veterinario')->assertExitCode(0);
+
+    $this->assertDatabaseHas('codigos_acceso', [
+        'rol_asignado' => 'veterinario',
+        'usado' => 0,
+    ]);
+}
 }
